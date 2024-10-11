@@ -1,0 +1,1 @@
+import{_ as s,c as i,o as a,a4 as n}from"./chunks/framework.CKcWb3E-.js";const o=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"column/Git/01.md","filePath":"column/Git/01.md"}'),t={name:"column/Git/01.md"},h=n("",43),l=[h];function p(k,e,d,r,g,F){return a(),i("div",null,l)}const y=s(t,[["render",p]]);export{o as __pageData,y as default};
