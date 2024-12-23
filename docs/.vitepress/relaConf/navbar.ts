@@ -25,7 +25,7 @@ export const nav: DefaultTheme.NavItem[] = [
       },
       {
         text: 'uni-app',
-        link: '/column/Git/uni-app/',
+        link: '/column/uni-app/',
       },
     ],
   },

@@ -1,3 +1,5 @@
 {
-  "editor.formatOnSave": true
+  "editor.formatOnSave": false,
+  "prettier.semi": false,
+  "prettier.trailingComma": "all",
 }

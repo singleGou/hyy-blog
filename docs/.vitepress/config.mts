@@ -1,11 +1,11 @@
-import { defineConfig } from 'vitepress'
-import { nav, sidebar,  } from './relaConf'
+import { defineConfig } from 'vitepress';
+import { nav, sidebar } from './relaConf';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   base: '/hyy-blog',
-  title: "忽如一夜的个人博客",
-  description: "A VitePress Site",
+  title: '忽如一夜的个人博客',
+  description: 'A VitePress Site',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     // logo: '/avatar.png',
@@ -22,12 +22,10 @@ export default defineConfig({
     //   }
     // ],
 
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
-    ],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/vuejs/vitepress' }],
 
     search: {
       provider: 'local'
     }
   }
-})
+});
