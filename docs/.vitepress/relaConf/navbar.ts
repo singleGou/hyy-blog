@@ -30,6 +30,15 @@ export const nav: DefaultTheme.NavItem[] = [
     ],
   },
   {
+    text: 'AI',
+    items: [
+      {
+        text: 'Cursor',
+        link: '/column/Cursor/',
+      },
+    ],
+  },
+  {
     text: '个人成长',
     items: [
       {

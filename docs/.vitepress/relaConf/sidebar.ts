@@ -35,5 +35,61 @@ export const sidebar: DefaultTheme.Sidebar = {
       text: '对象',
       link: '/column/TypeScript/06-对象.md',
     },
+    {
+      text: 'interface',
+      link: '/column/TypeScript/07-interface.md',
+    },
+    {
+      text: '类',
+      link: '/column/TypeScript/08-类.md',
+    },
+    {
+      text: '泛型',
+      link: '/column/TypeScript/09-泛型.md',
+    },
+    {
+      text: 'Enum 类型',
+      link: '/column/TypeScript/10-Enum类型.md',
+    },
+    {
+      text: '类型断言',
+      link: '/column/TypeScript/11-类型断言.md',
+    },
+    {
+      text: '模块',
+      link: '/column/TypeScript/12-模块.md',
+    },
+    {
+      text: 'namespace',
+      link: '/column/TypeScript/13-namespace.md',
+    },
+    {
+      text: '装饰器',
+      link: '/column/TypeScript/14-装饰器.md',
+    },
+    {
+      text: 'declare关键字',
+      link: '/column/TypeScript/15-declare关键字.md',
+    },
+    {
+      text: 'd.ts 类型声明文件',
+      link: '/column/TypeScript/16-d.ts类型声明文件.md',
+    },
+    {
+      text: '类型运算符',
+      link: '/column/TypeScript/17-类型运算符.md',
+    },
+    {
+      text: '类型映射',
+      link: '/column/TypeScript/18-类型映射.md',
+    },
+    {
+      text: '类型工具',
+      link: '/column/TypeScript/19-类型工具.md',
+    },
+    {
+      text: '注释指令',
+      link: '/column/TypeScript/20-注释指令.md',
+    },
   ],
 }
