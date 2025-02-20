@@ -30,11 +30,24 @@ export const nav: DefaultTheme.NavItem[] = [
     ],
   },
   {
+    text: '算法',
+    link: '/column/Algorithm/',
+  },
+  {
     text: 'AI',
     items: [
       {
         text: 'Cursor',
         link: '/column/Cursor/',
+      },
+    ],
+  },
+  {
+    text: 'Work',
+    items: [
+      {
+        text: 'Security',
+        link: '/column/Work/securityb.md',
       },
     ],
   },
