@@ -115,6 +115,7 @@ git branch <branch_name>
 
 # 创建并切换到分支
 git checkout -b <branch_name>
+# git 最新语法
 git switch -c <branch_name>
 ```
 
@@ -171,3 +172,11 @@ git push origin --tags
 git tag -d <tagname>
 git push origin :refs/tags/<tagname>
 ```
+
+# 基于标签创建新分支并切换到该分支
+git checkout -b <new_branch_name> <tagname>
+
+# 更新远程分支信息（删除本地已经不存在的远程分支缓存）
+git fetch --prune
+# 或简写
+git fetch -p
