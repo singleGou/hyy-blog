@@ -10,6 +10,12 @@ export const sidebar: DefaultTheme.Sidebar = {
       link: '/column/CSS/grid',
     },
   ],
+  '/column/JavaScript': [
+    {
+      text: '变量与数据类型',
+      link: '/column/JavaScript/01-变量与数据类型.md',
+    }
+  ],
   '/column/TypeScript/': [
     {
       text: '类型系统',
