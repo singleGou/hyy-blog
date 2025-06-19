@@ -29,3 +29,12 @@ Host github.com
 ```powershell
 ssh -T git@github.com
 ```
+
+
+
+fatal: unable to access 'https://gitee.com/singlegou/lure-admin.git/': Failed to connect to gitee.com port 443 after 21143 ms: Could not connect to server
+
+```powershell
+ipconfig /flushdns
+```
+

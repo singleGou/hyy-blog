@@ -449,3 +449,994 @@ function getAllFiles(dirPath, allFiles = []) {
 console.log(getAllFiles('./test-dir'));
 ```
 
+
+
+## util 工具
+
+
+
+##  http/https
+
+用于发起 http 请求和创建 web 服务器
+
+###  发起请求
+
+#### http.get
+
+```js
+import https from 'https';
+
+https.get(
+  'https://api.juejin.cn/content_api/v1/content/article_rank?category_id=1&type=hot&count=3&from=1&aid=2608&uuid=7145810834685003271&spider=0',
+  {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
+  (res) => {
+    // 响应内容拼接
+    let content = '';
+    res.on('data', (chunk) => {
+      content += chunk;
+    });
+
+    // 读完对外暴露内容和状态码
+    res.on('end', () => {
+      console.log(content);
+    });
+
+    res.on('error', (err) => {
+      console.error('Error:', err);
+    });
+  }
+);
+```
+
+#### http.request
+
+post, put, delete 等其他请求通过 http.request 发起
+
+需要分别指定请求的 `域名`，`方法`，`端口`，`资源路径`，`查询参数` 等：
+
+```js
+// 可以通过 URL 方法来解析一个完整的 url 链接
+const url = new URL('https://api.juejin.cn/content_api/v1/content/article_rank?category_id=1&type=hot&count=3&from=1&aid=2608&uuid=7145810834685003271&spider=0');
+const req = https.request(
+  {
+    hostname: url.hostname,
+    method: 'GET',
+    port: 443,
+    path: url.pathname + url.search
+  },
+  (res) => {
+    let content = '';
+    res.on('data', (chunk) => {
+      content += chunk;
+    });
+
+    res.on('end', () => {
+      console.log('statusCode:', res.statusCode);
+      console.log('Response:', content);
+    });
+  }
+);
+// 发送请求
+req.end();
+```
+
+发送 post 请求：
+
+```js
+const req = https.request(
+  {
+    hostname: url.hostname,
+    method: 'POST',
+    port: 443,
+    path: url.pathname + url.search,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
+  (res) => {
+    let content = '';
+    res.on('data', (chunk) => {
+      content += chunk;
+    });
+
+    res.on('end', () => {
+      console.log('statusCode:', res.statusCode);
+      console.log('Response:', content);
+    });
+  }
+);
+req.write(JSON.stringify({ name: 'zs', age: 18 }));
+req.end();
+
+```
+
+
+
+#### fetch/axios
+
+nodejs 18 开始支持 fetch
+
+```js
+fetch(url)
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((err) => {
+    console.error('Error fetching data:', err);
+  });
+```
+
+
+
+### 创建 HTTP Service
+
+```js
+import http from 'http';
+
+const server = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/html');
+  res.end('<h1>Hello World</h1>');
+});
+server.listen(3000, () => {
+  console.log('Server is running at http://localhost:3000');
+});
+```
+
+
+
+### request 内容
+
+#### 请求路径和方法
+
+```js
+const server = http.createServer((req, res) => {
+  // 获取请求的路径和方法
+  const { url, method } = req;
+  console.log(url, method);
+});
+```
+
+#### query 参数解析
+
+可以使用 URL 模块的 searchParams 直接提取：
+
+```js
+const server = http.createServer((req, res) => {
+  // 获取请求的路径和方法
+  const { url, method } = req;
+  const query = Object.fromEntries(new URL(url, 'http://localhost').searchParams);
+  console.log(query);
+});
+
+// fetch('http://localhost:3000/a/b/c?name=zs&age=3', { method: 'post' }) 浏览器测试，nodejs 打印输出 { name: 'zs', age: '3' }
+```
+
+#### body 参数解析
+
+post 请求通常会通过 body 传递数据：
+
+```js
+fetch('http://127.0.0.1:3000?hello=world', {
+  method: 'POST',
+  body: JSON.stringify({
+    name: 'xm',
+    age: 18
+  })
+})
+```
+
+通过监听 data 和 end 事件获取
+
+```js
+const server = http.createServer((req, res) => {
+  let body = [];
+  req
+    .on('data', (chunk) => {
+      body.push(chunk);
+    })
+    .on('end', () => {
+      body = Buffer.concat(body).toString();
+      body = JSON.parse(body);
+      console.log('body', body);
+    });
+});
+server.listen(3000, () => {
+  console.log('Server is running at http://localhost:3000');
+});
+```
+
+#### headers 参数
+
+还可以通过 headers 传递参数：
+
+```js
+const server = http.createServer((req, res) => {
+	console.log(req.headers)
+});
+```
+
+
+
+### response 内容
+
+通常用于设置向客户端要返回的内容信息
+
+```js
+const server = http.createServer((req, res) => {
+  // 设置响应状态码
+  res.statusCode = 200;
+  // 设置响应头
+  res.setHeader('Content-Type', 'text/html');
+  // 发送响应内容到客户端，结束响应
+  res.end('<h1>Hello, World!</h1>');
+});
+```
+
+也可以通过 `res.write`  多次返回内容后再调用结束：
+
+```js
+res.write('<h1>')
+res.write('Node.js')
+res.write('o')
+res.write('</h1>')
+res.end()
+```
+
+在浏览器中打开或通过 curl 发起请求：
+
+```bash
+curl 'http://127.0.0.1:3000'
+```
+
+
+
+## child_process
+
+用于创建子进程，虽然 js 是单线程的，但通过创建子进程也能实现多任务并行处理
+
+主要提供 4 个方法：spawn、exec、execFile 和 fork
+
+### spawn()
+
+启动一个子进程来执行指定的命令，并且可以通过流式数据通信与子进程进行交互
+
+支持同步（spawnSync）和异步（spawn）调用：
+
+```js
+import ChildProcess from 'child_process';
+
+const { spawn, spawnSync } = ChildProcess;
+
+const pwd = spawnSync('pwd');
+console.log(pwd.stdout.toString());
+const ls = spawnSync('ls', ['-lh']);
+console.log(ls.stdout.toString());
+```
+
+> 只能在 linux 系统或 git bash 中使用，windows 命令不一样
+
+可以设置 `stdio:'inherit'`，表示将子进程的标准输入/输出/错误流与父进程共享：
+
+```js
+spawnSync('pwd', {
+  stdio: 'inherit'
+})
+
+spawn('ls', {
+  stdio: 'inherit'
+})
+```
+
+通过 Git 获取某个文件最近一次的改动时间
+
+```bash
+git log -1 --pretty="%ci" ../fs/index.mjs
+```
+
+使用 spawn 实现：
+
+```js
+import ChildProcess from 'child_process'
+
+const { spawn, spawnSync } = ChildProcess
+const file = './index.js'
+const spawnProcess = spawn('git', ['log', '-1', '--pretty="%ci"', file])
+spawnProcess.stdout.on('data', (data) => {
+  console.log(`stdout: ${data}`)
+  console.log(new Date(data))
+})
+```
+
+### exec()
+
+启动一个 shell，并在 shell 中执行指定命令，执行完毕后插入 `stdout/stderr` 中，适用于一些命令行工具
+
+支持同步（execSync）和异步（exec）调用：
+
+```js
+import { exec, execSync } from 'child_process'
+
+const pwd = execSync('pwd')
+console.log(pwd.toString())
+const ls = execSync('ls -lh')
+console.log(ls.toString())
+
+const file = './index.js'
+const execProcess = exec(`git log -1 --pretty="%ci" ${file}`)
+execProcess.stdout.on('data', (data) => {
+  console.log(`stdout: ${data}`)
+  console.log(new Date(data))
+})
+```
+
+### execFile()
+
+与 `exec` 类似，但是可以直接执行某个文件，而无需通过 shell 执行，支持同步和异步
+
+新建可执行文件 hello.js：
+
+```js
+#!/usr/bin/env node
+
+const hello = 'hello world'
+console.log(hello)
+console.log(process.env)
+```
+
+通过 execFile 执行：
+
+```js
+import { execFile, execFileSync } from 'child_process'
+
+const file = './hello'
+const execData = execFileSync(file)
+console.log(execData.toString())
+
+execFile(file, (error, stdout, stderr) => {
+  if (error) {
+    throw error
+  }
+  console.log(stdout)
+  console.log(stderr)
+})
+```
+
+### fork()
+
+`fork` 专门用于在 Node.js 中衍生新的进程来执行 JavaScript 文件，并且建立一个与子进程的 IPC 通信管道
+
+在父进程中，可以使用 fork() 方法创建一个子进程，并与子进程通信
+
+```js
+// fork.js
+import { fork } from 'child_process';
+
+const child = fork('./child.js'); // 使用 fork 方法创建子进程
+
+child.on('message', (message) => {
+  // 监听子进程发送的消息
+  console.log('父进程收到消息:', message);
+});
+
+child.send('Hello, child process!'); // 向子进程发送消息
+```
+
+```js
+// child.js
+process.on('message', (message) => {
+  console.log('子进程收到消息:', message);
+  process.send('Hello, parent process!'); // 向父进程发送消息
+});
+```
+
+```bash
+$ node fork.js 
+子进程收到消息: Hello, child process!
+父进程收到消息: Hello, parent process!
+```
+
+> fork & spawn: fork 是一种特殊的创建子进程方式，通过 send + message 允许父子进程通信
+> spawn & exec: exec 处理简单命令，spawn 处理需要大量数据的实时数据
+
+
+
+## 其他模块
+
+- URL：提供了 URL 解析的实用工具方法
+- Timers：定时器相关方法
+- Readline：从可读流读取数据，支持逐行读取
+- Crypto：提供了一系列加密和解密数据的方法，内置了一些常用的算法
+
+
+
+## sync/callback/async
+
+- 同步：阻塞当前线程，直到操作完成
+- 异步回调：容易出现回调地狱的情况
+- ES6 (Async/Await)：ES6 引入的新语法可让我们更方便地写异步代码，同时避免了回调地狱的问题
+
+
+
+##  Node 中的事件循环
+
+与浏览器中的 Event Loop 不同，node 中的 Event Loop 分为 6 个阶段，按照顺序反复执行，每当进入某个阶段后，就会从回调队列中取出函数执行
+
+### 6 个阶段
+
+- timers 阶段：执行 setTimeout、setInterval 的回调
+- pending callbacks: 执行一些系统操作的回调，例如 TCP 错误
+- idle, prepare: 内部使用
+- poll: 检索新的 I/O 事件，执行 I/O 相关的回调（几乎除了 close 事件、定时器和 setImmediate 以外的所有回调）
+- check: 执行 setImmediate 回调
+- close callbacks: 如 socket.on('close', ...)
+
+### 2 个微任务队列
+
+- nextTick 队列：存储与 process.nextTick 函数相关的回调函数
+- Promise 队列
+
+同步代码
+
+微任务队列：nextTick 队列 promise 队列
+
+ 
+
+## Express web 服务器
+
+### 安装依赖
+
+```
+npm init -y
+
+改 type 为 module
+
+npm install express
+
+// 用于监听文件变化，自动重启服务
+npm i nodemon -D
+```
+
+### 基本使用
+
+```js
+import express from 'express';
+
+const PORT = 3000;
+const app = express();
+// 支持 json 数据解析，express 默认不支持解析传递的请求体数据
+app.use(express.json());
+
+// app.use 用于设置中间件函数来处理请求和响应，Express 会按照设置的顺序依次调用中间件函数
+app.use((req, res, next) => {
+  const { method, path, query, body, headers } = req;
+  console.log(`[${method}] ${path}`);
+  console.log('Query:', query);
+  console.log('Body:', body);
+  console.log('Headers:', headers);
+  next();
+});
+
+// 除了 app.get/post 等，还支持一种特殊的 app.all，可以匹配所有的请求方法
+app.all('/method/all', (req, res) => {
+  res.send(`All request method: ${req.method}`);
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
+```
+
+### 路由路径
+
+express 使用 path-to-regexp 来匹配路由路径
+
+路由路径可以是 `字符串` 或 `正则表达式`：
+
+```js
+// 使用正则表达式来匹配路由
+app.get(/world/, (req, res) => {
+  res.send('hello world')
+})
+```
+
+### Router
+
+```js
+import express from 'express';
+
+// 使用 express.Router 可以创建单独的路由实例
+const router = express.Router();
+
+router.get('/router/get', (req, res) => {
+  res.send('GET request from router');
+});
+
+router.post('/router/post', (req, res) => {
+  res.send('POST request from router');
+});
+
+export default router;
+```
+
+app.js 引入：
+
+```js
+import routerDemo from './routes/router-demo.js';
+
+// ...
+
+// 将 routerDemo 路由注册到 /demo 路径下，路由会自动拼接上 /demo 前缀
+// localhost:3000/demo/router/get
+app.use('/demo', routerDemo);
+```
+
+### app.route()
+
+创建链式路由，避免重复的路由名称
+
+可以用于创建相同路由名称的不同请求方法，同时可以通过 `all` 设置所有请求的前置处理逻辑：
+
+```js
+app
+  .route('/route/any')
+  .all((req, res, next) => {
+    console.log('pre all', req.method, req.path)
+    next()
+  })
+  .get((req, res) => {
+    console.log('get request')
+    res.send('get request')
+  })
+  .post((req, res) => {
+    console.log('post request')
+    res.send('post request')
+  })
+```
+
+### 响应数据
+
+- res.json() 主要用于发送 json 数据
+- res.send() 可以发送任意类型的数据
+- res.download() 用于下载文件
+
+```js
+// routes/response.js
+import express from 'express';
+
+const router = express.Router();
+
+router.get('/response/get', (req, res) => {
+  res.json({
+    name: 'express',
+    type: 'framework'
+  });
+});
+
+router.get('/response/send', (req, res) => {
+  // html
+  res.send('<h1>hello express</h1>')
+
+  // json
+  // res.send({
+  //   name: 'express',
+  //   type: 'framework'
+  // })
+
+  // string
+  // res.send('hello express')
+
+  // Buffer
+  // res.send(Buffer.from('hello express'))
+})
+
+router.get('/response/download', (req, res) => {
+  // 下载文件
+  res.download(path.resolve('./package.json'));
+});
+
+export default router;
+
+```
+
+### 操作 header
+
+```js
+// routes/headers.js
+router.get('/response/get/header', (req, res) => {
+  // 直接通过 req.headers 即可获取到请求头
+  // res.json(req.headers);
+    
+  // 设置响应头
+  res.set('Content-Type', 'text/html');
+  res.set('token', '1234567890');
+    
+  res.send('<h1>hello express</h1>');
+});
+```
+
+### 代码结构
+
+```
+├── app.js
+├── middleware
+|  └── index.js
+├── package-lock.json
+├── package.json
+└── routes
+   ├── headers.js
+   ├── index.js
+   ├── method.js
+   ├── response.js
+   └── router-demo.js
+```
+
+app.js:
+
+```js
+import express from 'express';
+import mountMiddleware from './middleware/index.js';
+import mountRouters from './routes/index.js';
+
+const PORT = 3000;
+const app = express();
+
+mountMiddleware(app);
+mountRouters(app);
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
+```
+
+middleware/index.js:
+
+```js
+import express from 'express';
+
+export default function mountMiddleware(app) {
+  // 支持 body 解析
+  app.use(express.json());
+
+  // 自定义中间件函数
+  app.use((req, res, next) => {
+    const { method, path, query, body, headers } = req;
+    console.log(`[${method}] ${path}`);
+    console.log('Query:', query);
+    console.log('Body:', body);
+    console.log('Headers:', headers);
+    next();
+  });
+}
+```
+
+routes/index.js:
+
+```js
+import responseRouter from './response.js';
+import demoRouter from './router-demo.js';
+import mountMethodDemo from './method.js';
+
+const routers = [responseRouter, demoRouter];
+
+export default function mountRouters(app) {
+  mountMethodDemo(app);
+
+  // 注册所有 router
+  app.use(routers);
+
+  // 将 demoRouter 路由注册到 /demo 路径下，路由会自动拼接上 /demo 前缀
+  app.use('/demo', demoRouter);
+
+  // 一些自定义路由
+  app.get('/hello/:id', (req, res) => {
+    const { params } = req;
+    // params 主要指路由中携带的 REST 参数
+    console.log('params', params);
+    res.json(params);
+  });
+}
+```
+
+### Restful API
+
+```js
+// restful.js
+import express from 'express';
+
+const router = express.Router();
+
+const userList = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+  { id: 3, name: 'Charlie' }
+];
+
+router.get('/users', (req, res) => {
+  res.json(userList);
+});
+
+router.get('/users/:id', (req, res) => {
+  const { id } = req.params;
+  const user = userList.find((user) => user.id === Number(id));
+  res.json(user);
+});
+
+router.post('/users', (req, res) => {
+  // 创建新用户
+  const user = {
+    id: userList.length + 1,
+    ...req.body.name // 从请求体获取用户名
+  };
+  userList.push(user);
+  res.json(user);
+});
+
+router.put('/users/:id', (req, res) => {
+  const { id } = req.params;
+  const user = userList.find((user) => user.id === Number(id));
+  user.name = req.body.name;
+  res.json(user);
+});
+
+router.delete('/users/:id', (req, res) => {
+  const { id } = req.params;
+  const index = userList.findIndex((user) => user.id === Number(id));
+  userList.splice(index, 1);
+  res.json({
+    code: 200,
+    message: 'User deleted successfully'
+  });
+});
+
+export default router;
+```
+
+注册路由，然后引入：
+
+```js
+// routes/index.js
+import restfulRouter from './restful.js';
+
+const routers = [restfulRouter];
+
+export default function mountRouters(app) {
+  // 注册所有 router
+  app.use(routers);
+
+  // 将 restfulRouter 路由注册到 /api 路径下，路由会自动拼接上 /api 前缀
+  app.use('/api', restfulRouter);
+}
+```
+
+### 静态资源目录代理
+
+```js
+// 设置静态资源目录，这样可以直接访问目标目录下的文件资源
+app.use(express.static('public'));
+```
+
+### 文件上传
+
+使用第三方库 multer：
+
+```bash
+pnpm i multer
+```
+
+```js
+// routes/upload.js
+import express from 'express';
+import multer from 'multer';
+import fs from 'fs';
+
+const router = express.Router();
+
+// 指定文件存储位置和文件名
+const storage = multer.diskStorage({
+  // destination() 函数指定了文件存储目录
+  destination(req, file, cb) {
+    // 指定文件存储目录
+    const dir = './uploads';
+    if (!fs.existsSync(dir)) {
+      // 如果目录不存在，则创建目录
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    // 将文件存储到指定目录
+    cb(null, dir);
+  },
+  // filename() 函数指定了文件命名规则
+  filename(req, file, cb) {
+    const ext = file.originalname.split('.').pop(); // 获取文件扩展名
+    cb(null, `${Date.now()}-${file.fieldname}.${ext}`); // 将文件存储到指定位置，并以指定的文件名命名
+  }
+});
+
+const upload = multer({
+  storage, // 存储位置和文件名规则
+  limits: {
+    fileSize: 1024 * 1024 * 5 // 限制文件大小为 5 MB
+  },
+  // fileFilter() 函数指定了文件类型过滤规则
+  fileFilter(req, file, cb) {
+    // 只允许上传图片
+    if (!file.mimetype.startsWith('image/')) {
+      const err = new Error('Only image files are allowed!');
+      err.status = 400;
+      return cb(err, false);
+    }
+    return cb(null, true);
+  }
+});
+// 上传单个文件
+router.post('/upload/image', upload.single('file'), (req, res) => {
+  // 这里的 upload.single() 函数指定了只上传单个文件
+  // 返回上传成功信息和上传文件信息
+  res.json({
+    message: 'File uploaded successfully',
+    data: req.file
+  });
+});
+export default router;
+
+```
+
+### 操作数据库
+
+常用的数据库有 MySQL、MongoDB、Redis 等
+
+数据库管理工具：vscode 插件 Database Client
+
+#### Sequelize 操作 MySQL
+
+连接数据库后使用 sql 语句新建一个 `node_test` 数据库和一张用于测试的 `users` 表：
+
+```sql
+create database node_test;
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+  `age` INT(3) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+```
+
+安装依赖：
+
+```bash
+pnpm i sequelize mysql2
+```
+
+创建 Sequelize 实例：
+
+```js
+import Sequelize from 'sequelize'
+
+const sequelize = new Sequelize('node_test', 'root', 'password', {
+  host: 'localhost',
+  dialect: 'mysql'
+})
+```
+
+定义 users 表对应的模型：
+
+```js
+// 定义模型
+const User = sequelize.define(
+  'User',
+  {
+    id: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false
+    },
+    name: {
+      type: Sequelize.STRING(50),
+      allowNull: false
+    },
+    age: {
+      type: Sequelize.INTEGER(3),
+      allowNull: false
+    }
+  },
+  {
+    tableName: 'users', // 指定表格名称
+    timestamps: false // 禁止 Sequelize 自动生成 createdAt 和 updatedAt 字段
+  }
+)
+```
+
+创建 CURD 方法：
+
+```js
+// 创建记录
+async function createUser(name, age) {
+  const user = await User.create({ name, age })
+  return user.toJSON()
+}
+
+// 查询所有记录
+async function findAllUsers() {
+  const users = await User.findAll()
+  return users.map((user) => user.toJSON())
+}
+
+// 根据 id 查询记录
+async function findUserById(id) {
+  const user = await User.findByPk(id)
+  return user?.toJSON()
+}
+
+// 更新记录
+async function updateUser(id, name, age) {
+  const user = await User.findByPk(id)
+  if (user) {
+    user.name = name
+    user.age = age
+    await user.save()
+    console.log(user.toJSON())
+  } else {
+    console.log('User not found')
+  }
+  return user
+}
+
+// 删除记录
+async function deleteUser(id) {
+  const user = await User.findByPk(id)
+  if (user) {
+    await user.destroy()
+    console.log('User deleted')
+  } else {
+    console.log('User not found')
+  }
+  return user
+}
+
+export const UserDb = {
+  User,
+  createUser,
+  findAllUsers,
+  findUserById,
+  updateUser,
+  deleteUser
+}
+```
+
+
+
+Mongoose 操作 MongoDB
+
+
+
+# 数据库
+
+主键 唯一 不可变 一般是自增 id，不要跟业务相关如身份证号等
+
+外键 可以把数据与另一张表关联起来的列 通过外键约束实现
+
+索引 用于提高查询速度 效率取决于该列是否散列 
+
+
+
+通过创建唯一索引或唯一约束，可以保证某一列的值具有唯一性：
+
+```mysql
+ALTER TABLE students
+ADD UNIQUE INDEX uni_name (name);
+```
+
+也可以只对某一列添加唯一约束而不创建唯一索引
+
+```mysql
+ALTER TABLE students
+ADD CONSTRAINT uni_name UNIQUE (name);
+```
+
