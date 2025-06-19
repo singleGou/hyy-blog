@@ -20,12 +20,17 @@ export const nav: DefaultTheme.NavItem[] = [
         link: '/column/TypeScript/',
       },
       {
-        text: 'Git',
-        link: '/column/Git/',
-      },
-      {
         text: 'uni-app',
         link: '/column/uni-app/',
+      },
+    ],
+  },
+  {
+    text: '必备技能',
+    items: [
+      {
+        text: 'Git',
+        link: '/column/Git/',
       },
     ],
   },

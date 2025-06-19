@@ -1428,14 +1428,14 @@ Mongoose 操作 MongoDB
 
 通过创建唯一索引或唯一约束，可以保证某一列的值具有唯一性：
 
-```mysql
+```sql
 ALTER TABLE students
 ADD UNIQUE INDEX uni_name (name);
 ```
 
 也可以只对某一列添加唯一约束而不创建唯一索引
 
-```mysql
+```sql
 ALTER TABLE students
 ADD CONSTRAINT uni_name UNIQUE (name);
 ```

@@ -14,19 +14,19 @@ It looks like you're having trouble connecting to GitHub via SSH on port 22. Thi
 1. Try using HTTPS port (443) for SSH connections:
 
 Create or edit `~/.ssh/config`:
-```powershell
+```bash
 notepad "$env:USERPROFILE\.ssh\config"
 ```
 
 Add these lines:
-```text
+```
 Host github.com
   Hostname ssh.github.com
   Port 443
 ```
 
 2. Test the connection:
-```powershell
+```bash
 ssh -T git@github.com
 ```
 
@@ -34,7 +34,7 @@ ssh -T git@github.com
 
 fatal: unable to access 'https://gitee.com/singlegou/lure-admin.git/': Failed to connect to gitee.com port 443 after 21143 ms: Could not connect to server
 
-```powershell
+```bash
 ipconfig /flushdns
 ```
 
