@@ -27,5 +27,8 @@ export default defineConfig({
     search: {
       provider: 'local'
     }
+  },
+  vite: {
+    publicDir: 'public',
   }
 });

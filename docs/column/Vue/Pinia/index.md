@@ -165,7 +165,7 @@ piniaStoreA.count1 = 10;
 console.log('sum: ', piniaStoreA.sum);
 ```
 
-![](D:\hyy\code\hyy-blog\docs\column\Vue\Pinia\images\缓存特性.png)
+![](/images/缓存特性.png)
 
 可以看到只有在首次使用或者改变 sum 所依赖的值的时候，getters 中的 sum 才会被调用
 
