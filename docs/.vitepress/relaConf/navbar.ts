@@ -7,10 +7,10 @@ export const nav: DefaultTheme.NavItem[] = [
   {
     text: '前端开发',
     items: [
-      {
-        text: 'CSS',
-        link: '/column/CSS/',
-      },
+      // {
+      //   text: 'CSS',
+      //   link: '/column/CSS/',
+      // },
       {
         text: 'JavaScript',
         link: '/column/JavaScript/',
@@ -20,9 +20,13 @@ export const nav: DefaultTheme.NavItem[] = [
         link: '/column/TypeScript/',
       },
       {
-        text: 'uni-app',
-        link: '/column/uni-app/',
+        text: 'NodeJS',
+        link: '/column/NodeJS/',
       },
+      // {
+      //   text: 'uni-app',
+      //   link: '/column/uni-app/',
+      // },
     ],
   },
   {
@@ -51,8 +55,8 @@ export const nav: DefaultTheme.NavItem[] = [
     text: 'Work',
     items: [
       {
-        text: 'Security',
-        link: '/column/Work/securityb.md',
+        text: 'Ant-Design-Vue',
+        link: '/column/Work/ant-design-vue-admin.md',
       },
     ],
   },
@@ -63,10 +67,10 @@ export const nav: DefaultTheme.NavItem[] = [
         text: '思考',
         link: '/column/Thought/',
       },
-      {
-        text: '摄影',
-        link: '/column/Photos/',
-      },
+      // {
+      //   text: '摄影',
+      //   link: '/column/Photos/',
+      // },
     ],
   },
   {
@@ -74,11 +78,11 @@ export const nav: DefaultTheme.NavItem[] = [
     items: [
       {
         text: 'Github',
-        link: 'https://github.com',
+        link: 'https://github.com/singleGou',
       },
       {
         text: '掘金',
-        link: 'https://juejin.cn',
+        link: 'https://juejin.cn/user/3681619519481069',
       },
     ],
   },

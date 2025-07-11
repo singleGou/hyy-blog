@@ -1,20 +1,44 @@
 import { DefaultTheme } from 'vitepress'
 export const sidebar: DefaultTheme.Sidebar = {
-  '/column/CSS/': [
-    {
-      text: 'Flex 布局',
-      link: '/column/CSS/flex',
-    },
-    {
-      text: 'Grid 布局',
-      link: '/column/CSS/grid',
-    },
-  ],
+  // '/column/CSS/': [
+  //   {
+  //     text: 'Flex 布局',
+  //     link: '/column/CSS/flex',
+  //   },
+  //   {
+  //     text: 'Grid 布局',
+  //     link: '/column/CSS/grid',
+  //   },
+  // ],
   '/column/JavaScript': [
     {
       text: '变量与数据类型',
       link: '/column/JavaScript/01-变量与数据类型.md',
-    }
+    },
+    {
+      text: '类型转换',
+      link: '/column/JavaScript/02-类型转换.md',
+    },
+    {
+      text: '运算符',
+      link: '/column/JavaScript/03-运算符.md',
+    },
+    {
+      text: '语句',
+      link: '/column/JavaScript/04-语句.md',
+    },
+    {
+      text: '函数',
+      link: '/column/JavaScript/05-函数.md',
+    },
+    {
+      text: '对象',
+      link: '/column/JavaScript/06-对象.md',
+    },
+    {
+      text: '数组',
+      link: '/column/JavaScript/07-数组.md',
+    },
   ],
   '/column/TypeScript/': [
     {
