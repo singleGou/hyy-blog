@@ -1,0 +1,1 @@
+import{_ as e,c as t,o as a}from"./chunks/framework.CLzmwTRU.js";const i=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"column/CSS/04-背景与边框.md","filePath":"column/CSS/04-背景与边框.md"}'),o={name:"column/CSS/04-背景与边框.md"};function c(n,r,_,s,m,p){return a(),t("div")}const l=e(o,[["render",c]]);export{i as __pageData,l as default};
