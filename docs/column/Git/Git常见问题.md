@@ -38,3 +38,13 @@ fatal: unable to access 'https://gitee.com/singlegou/lure-admin.git/': Failed to
 ipconfig /flushdns
 ```
 
+
+
+## 更新远程分支信息（删除本地已经不存在的远程分支缓存）
+
+```bash
+git fetch --prune
+# 或简写
+git fetch -p
+```
+
