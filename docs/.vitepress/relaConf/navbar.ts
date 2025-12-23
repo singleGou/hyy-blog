@@ -7,10 +7,10 @@ export const nav: DefaultTheme.NavItem[] = [
   {
     text: '前端开发',
     items: [
-      // {
-      //   text: 'CSS',
-      //   link: '/column/CSS/',
-      // },
+      {
+        text: 'CSS',
+        link: '/column/CSS/',
+      },
       {
         text: 'JavaScript',
         link: '/column/JavaScript/',
@@ -23,10 +23,6 @@ export const nav: DefaultTheme.NavItem[] = [
         text: 'NodeJS',
         link: '/column/NodeJS/',
       },
-      // {
-      //   text: 'uni-app',
-      //   link: '/column/uni-app/',
-      // },
     ],
   },
   {
@@ -39,38 +35,12 @@ export const nav: DefaultTheme.NavItem[] = [
     ],
   },
   {
-    text: '算法',
-    link: '/column/Algorithm/',
-  },
-  {
-    text: 'AI',
-    items: [
-      {
-        text: 'Cursor',
-        link: '/column/Cursor/',
-      },
-    ],
-  },
-  {
     text: 'Work',
     items: [
       {
         text: 'Ant-Design-Vue',
         link: '/column/Work/ant-design-vue-admin.md',
       },
-    ],
-  },
-  {
-    text: '个人成长',
-    items: [
-      {
-        text: '思考',
-        link: '/column/Thought/',
-      },
-      // {
-      //   text: '摄影',
-      //   link: '/column/Photos/',
-      // },
     ],
   },
   {

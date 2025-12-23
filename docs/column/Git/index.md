@@ -68,7 +68,7 @@ Git 和 SVN 等不同的是有一个暂存区的概念
 
 **版本库（Repository）**：
 
-工作区有一个隐藏目录 `.git` ，里面存放的就是 Git 的版本库，里面存了很多东西，其中最重要的就是称为 stage（或者叫 index）的暂存区，还有 Git 为我们自动创建的第一个分支 master，以及指向 master 的一个指针叫 HEAD
+工作区有一个隐藏目录 `.git` ，里面存放的就是 Git 的版本库，里面存了很多东西，其中最重要的就是称为 `stage`（或者叫 `index`）的暂存区，还有 Git 为我们自动创建的第一个分支 `master`，以及指向 master 的一个指针叫 `HEAD`
 
 ### 将文件添加到版本库
 
@@ -79,8 +79,7 @@ Git 和 SVN 等不同的是有一个暂存区的概念
 
 ```bash
 # 把文件添加到仓库
-git add file1.md
-git add file2.md
+git add <file>
 
 # 把文件提交到仓库
 git commit -m 'commit message'
@@ -142,7 +141,7 @@ git 优秀的地方之一在于它管理的是修改而不是文件
 
 ![](./images/git-log.png)
 
-可以看到我提交了三次，还可以使用 `git log --pretty=online` 在一行内打印每次提交的信息：
+可以看到我提交了三次，还可以使用 `git log --pretty=oneline` 在一行内打印每次提交的信息：
 
 ![](./images/git-log2.png)
 
@@ -211,11 +210,11 @@ My shabby company is still using SVN.
 可以看到 git 提示你可以使用 `git restore <file>` 命令忽略更改（旧版 git 使用的是 `git checkout -- <file>`)
 
 ```bash
-# 旧版 git
+# git 旧语法
 git checkout -- <file>
 
-# 新版 git
-git restore <file> 
+# git 新语法
+git restore <file>
 ```
 
 假设你之前糊涂把之前那段话添加到了暂存区（执行了 `git add` 操作），现在想回头怎么办？还是先看一下状态：
@@ -232,7 +231,7 @@ git reset HEAD <file>
 git restore --staged <file>
 ```
 
-如果你把那句话提交到了版本库（执行了 `git commit`）命令，可以使用之前版本回退功能，但是你要是推送到了公司的远程仓库，那就真的没救了
+如果你把那句话提交到了版本库（执行了 `git commit`）命令，可以使用之前版本回退功能，但是你要是推送到了公司的远程仓库，那你今年的年终奖就别想了
 
 总结一下：
 
@@ -264,8 +263,8 @@ git restore --staged <file>
 
 ```bash
 # 全局配置
-git config –-global user.name yourname
-git config –-global user.email youremail@example.com
+git config --global user.name yourname
+git config --global user.email youremail@example.com
 ```
 
 ### 创建 SSH Key
@@ -308,15 +307,27 @@ ssh-keygen -t rsa -C youremail@example.com
 git remote add origin git@github.com:xxx/test.git
 ```
 
-这里的 origin 就是远程仓库的名字，这是 git 默认的叫法，将这个 `git@github.com:xxx/test.git` 改成你自己的，下一步就可以把本地的版本库都提交到上面：
+这里的 `origin` 就是远程仓库的名字，这是 git 默认的叫法，将这个 `git@github.com:xxx/test.git` 改成你自己的，下一步就可以把本地的版本库都提交到上面：
 
 ```bash
 git push -u origin master
 ```
 
-如果碰到下面这种情况了，说明你之前**创建 SSH Key** 的工作没有做到位，自己再检查一些吧
+> 这里的 `-u` 是 `--set-upstream` 的简写，表示**建立本地分支与远程分支的跟踪关系**（tracking relationship），使得后续的 `git push` 或 `git pull` 操作可以省略远程分支名，直接使用 `git push` 或 `git pull` 即可
+
+如果碰到下面这种情况了，说明你之前**创建 SSH Key** 的工作没有做到位，自己再检查一下吧
 
 ![](./images/git-push.png)
+
+### 删除远程仓库
+
+如果一个手抖把远程仓库地址添加错了，可以使用以下命令删除：
+
+```bash
+git remote rm origin
+```
+
+
 
 ### 克隆远程仓库
 
@@ -369,19 +380,20 @@ git branch -d <branch_name>
 # 查看远程库信息
 git remote -v
 
-# 在推送前最好先拉取一下远程分支
-git pull origin <branch_name>
-
 # 在本地创建和远程分支对应的分支，名称最好一样
 git checkout -b <branch_name> origin/<branch_name>
 
-# 建立本地分支和远程分支的关联
+# 在推送前最好先拉取一下远程分支试图合并，因为远程分支比你的本地更新
+git pull origin <branch_name>
+
+# 如果 pull 失败提示 no tracking information，使用如下命令建立本地分支和远程分支的关联
 git branch --set-upstream <branch_name> origin/<branch_name>
+
+# pull 成功后如果有冲突，要先解决冲突，再 push
+git push origin <branch_name>
 ```
 
 建立本地分支和远程分支的关联后，就可以直接使用 `git pull` 和 `git push` 去拉取和提交代码了
-
-如果使用 git pull 有冲突，要先解决冲突
 
 > 本地新建的分支如果不推送到远程，对其他人就是不可见的
 
@@ -471,5 +483,70 @@ dist/
 # 5. 动态文件（如日志）
 *.log 
 !audit.log   # 白名单
+```
+
+因为有 `.gitignore` 文件的存在，所以一般会直接把所有修改都添加到暂存区一起提交而不是一个个去添加：
+
+```bash
+# 这里的 "." 代表所有文件
+git add .
+```
+
+
+
+## 代码示例
+
+在日常开发中的一些命令：
+
+```bash
+git clone git@github.com:xxx/test.git
+git pull
+
+git add .
+git commit -m 'fix: xxx bug'
+git switch -c dev
+git push origin dev
+
+git switch master
+git merge dev
+```
+
+
+
+### 删除远程分支
+
+```mermaid
+graph TB 
+A[查看远程分支] --> B[执行删除命令]
+B --> C[清理本地缓存]
+C --> D[验证删除结果]
+D --> E[团队通知]
+```
+
+具体命令：
+
+```bash
+# 查看远程分支列表 
+git branch -r
+
+# 执行删除命令
+git push origin --delete feature/login
+
+# 清除本地缓存，如果不清除本地视图仍然会显示已删除的分支
+git fetch --prune origin
+
+# 验证删除结果 
+git ls-remote --heads origin
+
+# 通知团队分支已废弃 协作关键！          
+```
+
+误删分支恢复：
+
+```bash
+# 查找分支最后提交的 commit id
+git reflog show origin/feature/login
+# 重建分支 
+git push origin a1b2c3d:refs/heads/feature/login 
 ```
 
