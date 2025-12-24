@@ -41,7 +41,7 @@ jobs:
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          deploy_key: ${{ secrets.DEPLOY_KEY }}   # 下面步骤③生成
+          deploy_key: ${{ secrets.hyyyKey }}   # 下面步骤③生成
           publish_dir: docs/.vitepress/dist
           publish_branch: gh-pages
           commit_message: ${{ github.event.head_commit.message }}
