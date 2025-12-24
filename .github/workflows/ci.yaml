@@ -22,18 +22,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22.19.0
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
+          # cache: pnpm
+          # cache-dependency-path: pnpm-lock.yaml
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4  # 引入这个 Action 会自动安装 pnpm 并处理兼容性
         with:
           version: 10
+          run_install: false
 
       # 3. 装依赖 & 构建
       - name: Install & Build
         run: |
-          pnpm ci
+          pnpm install --frozen-lockfile
           pnpm run docs:build
 
       # 4. 部署到 gh-pages 分支
