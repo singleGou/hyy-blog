@@ -21,14 +21,14 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: npm
+          node-version: 22.19.0
+          cache: pnpm
 
       # 3. 装依赖 & 构建
       - name: Install & Build
         run: |
-          npm ci
-          npm run docs:build
+          pnpm ci
+          pnpm run docs:build
 
       # 4. 部署到 gh-pages 分支
       - name: Deploy to gh-pages
