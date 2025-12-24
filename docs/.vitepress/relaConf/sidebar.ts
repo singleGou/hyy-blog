@@ -39,6 +39,18 @@ export const sidebar: DefaultTheme.Sidebar = {
       text: '数组',
       link: '/column/JavaScript/07-数组.md',
     },
+    {
+      text: '可迭代对象',
+      link: '/column/JavaScript/08-可迭代对象.md',
+    },
+    {
+      text: 'Map 和 Set',
+      link: '/column/JavaScript/08-可迭代对象.md',
+    },
+    {
+      text: '解构赋值',
+      link: '/column/JavaScript/10-解构赋值.md',
+    },
   ],
   '/column/TypeScript/': [
     {
