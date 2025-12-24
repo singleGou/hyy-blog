@@ -45,7 +45,7 @@ export const sidebar: DefaultTheme.Sidebar = {
     },
     {
       text: 'Map 和 Set',
-      link: '/column/JavaScript/08-Map和Set.md',
+      link: '/column/JavaScript/09-Map和Set.md',
     },
     {
       text: '解构赋值',

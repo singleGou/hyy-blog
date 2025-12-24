@@ -1,0 +1,40 @@
+name: Deploy VitePress to gh-pages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read        # 只需读源码
+  pages: write          # 写 GitHub Pages
+  id-token: write       # 若以后切 OIDC 用
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 拉代码
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. 装 Node（版本与你本地一致）
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # 3. 装依赖 & 构建
+      - name: Install & Build
+        run: |
+          npm ci
+          npm run docs:build
+
+      # 4. 部署到 gh-pages 分支
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          deploy_key: ${{ secrets.DEPLOY_KEY }}   # 下面步骤③生成
+          publish_dir: docs/.vitepress/dist
+          publish_branch: gh-pages
+          commit_message: ${{ github.event.head_commit.message }}
