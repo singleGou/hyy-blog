@@ -25,9 +25,9 @@ jobs:
           cache: npm
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4  # 官方动作
+        uses: pnpm/action-setup@v4  # 引入这个 Action 会自动安装 pnpm 并处理兼容性
         with:
-          version: 10
+        version: 10
 
       # 3. 装依赖 & 构建
       - name: Install & Build
