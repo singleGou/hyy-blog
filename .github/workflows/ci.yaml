@@ -2,7 +2,7 @@ name: Deploy VitePress to gh-pages
 
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 permissions:
   contents: read        # 只需读源码

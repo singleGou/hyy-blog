@@ -6,7 +6,7 @@ lastUpdated: true
 hero:
   name: "忽如一夜的博客"
   text: "Good Good Study, Day Day Big"
-  tagline: 成长/记录/分享
+  tagline: 前端技术博客
   actions:
     - theme: brand
       text: 主页
