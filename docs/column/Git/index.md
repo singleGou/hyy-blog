@@ -550,3 +550,14 @@ git reflog show origin/feature/login
 git push origin a1b2c3d:refs/heads/feature/login 
 ```
 
+**如果现有 origin 是错误的/旧的，删除后重新添加：**
+
+```bash
+# 先确认当前配置的远程仓库：
+git remote -v
+# 删除现有 origin
+git remote remove origin
+# 重新添加
+git remote add origin git@github-personal:singleGou/nest-admin.git
+```
+

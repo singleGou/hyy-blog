@@ -67,6 +67,15 @@ git config --global user.email "hyy@cestc.cn"
    git remote set-url origin git@github-company:your-corp/project.git
    ```
 
+git 配置了个人和公司两个账号，但是不小心用公司账号提交了 commit，push 时因为使用公司的账号权限失败了，该怎么做
+
+```bash
+# 修改最近一次 commit 的作者信息
+git commit --amend --author="个人姓名 <个人邮箱@example.com>" --no-edit
+```
+
+
+
 ## github actions
 
 你已有的 SSH key（hyyyKey）是你自己电脑连接 GitHub 用的，GitHub Actions 运行在云端全新容器里，拿不到你本地的私钥，所以 peaceiris/actions-gh-pages 依旧报 “not found deploy key”
@@ -80,7 +89,7 @@ git config --global user.email "hyy@cestc.cn"
     # 得到两个文件：
     # deploy_key     ← 私钥
     # deploy_key.pub ← 公钥
-     ```
+    ```
 
 2. 把公钥填进仓库
 GitHub 仓库 → Settings → Deploy keys → Add deploy key

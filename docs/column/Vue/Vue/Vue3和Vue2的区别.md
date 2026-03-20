@@ -1,4 +1,4 @@
-Vue2 基础简单快速上手 Vue3
+有 Vue2 基础，简单快速上手 Vue3
 
 这里主要讨论的是 Vue3 中组合式  API 主流写法 和 Vue2 中的区别，因为实际开发中一般都是使用 Vue3 **组合式 API** （**Composition API**）
 
@@ -68,15 +68,19 @@ Vue2 中只能有一个根节点，Vue3 中支持多个根节点
 
 ## 生命周期
 
-Vue2 **beforeCreate created** beforeMount mounted beforeUpdate updated beforeDestroy destroyed activated deactivated
+Vue2：
 
-Vue3 **setup** onBeforeMount onMounted onBeforeUpdate onUpdated  onBeforeUnmount onUnmounted onActivated onDeactivated
+**beforeCreate created** beforeMount mounted beforeUpdate updated beforeDestroy destroyed activated deactivated
+
+Vue3：
+
+**setup** onBeforeMount onMounted onBeforeUpdate onUpdated  onBeforeUnmount onUnmounted onActivated onDeactivated
 
 
 
 ## ref 和 reactive
 
-Vue2 中 data 函数中的数据都具有响应式，Vue3 中组合式 API 不存在 data 函数，而是通过引入 `ref `和 `reactive` 函数使变量成为响应式数据
+Vue2 中 data 函数中的数据都具有响应式，Vue3 中组合式 API 不存在 data 函数，而是通过引入 `ref` 和 `reactive` 函数使变量成为响应式数据
 
 - ref 在 js 中需要通过 `.value` 获取，在 template 中则不需要，因为 ref 函数返回的是一个包装对象
 - ref 也可以传入引用类型，内部也是通过调用 reactive 来实现的
@@ -655,7 +659,7 @@ const handleClick = () => {
 ```
 
 
-> 如果 Vue 警告：Parent 组件没有"可绑定 attrs 的单一根节点"。解决：要么包裹成单根，要么 `defineOptions({ inheritAttrs: false })` 后手动 `v-bind="$attrs"` 指定传给谁**
+> 如果 Vue 警告：Parent 组件没有"可绑定 attrs 的单一根节点"。解决：要么包裹成单根，要么 `defineOptions({ inheritAttrs: false })` 后手动 `v-bind="$attrs"` 指定传给谁
 
 ### provide/inject
 
